@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
   try {
     // create is a sequelize method that takes in 2 arguments: the data I want to create and the id of the row to be updated
     const categoryData = await Category.create(req.body);
-    res.status(200).json(categoryData);
+    res.status(200).json("Category created Successfully!");
   }
   catch (err) {
     res.status(400).json(err);
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   try {
-    // update is a sequelize method that takes in 2 arguments: the data and the id of the row to be updated
+    // update is a sequelize method that takes in 2 arguments: the data and the id of the row to be updated; updates the data in the row specified by the category_name
     const categoryData = await Category.update(req.body, {
       where: {
         id: req.params.id,
@@ -63,12 +63,13 @@ router.put('/:id', async (req, res) => {
       res.status(404).json({ message: 'No category with that id!' });
       return;
     }
-    res.status(200).json(categoryData);
+    res.status(200).json("Category Successfully Updated!");
   }
   catch (err) {
     res.status(500).json(err);
-}
+  }
 });
+
 // delete on tag by its `id` value
 // router.delete('/api/categories/:id', (req, res) => {
 router.delete('/:id', async (req, res) => {
@@ -85,7 +86,7 @@ router.delete('/:id', async (req, res) => {
       res.status(404).json({ message: 'No category with that id!' });
       return;
     }
-    res.status(200).json(categoryData);
+    res.status(200).json("Category Succesfully Deleted!");
   }
   catch (err) {
     res.status(500).json(err);

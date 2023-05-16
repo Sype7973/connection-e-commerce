@@ -39,13 +39,6 @@ router.get('/:id', async (req, res) => {
 
 // create new product
 router.post('/', async (req, res) => {
-  try {
-    const productData = await Product.create(req.body);
-      res.status(200).json(productData);
-  }
-  catch (err) {
-    res.status(400).json(err);
-}
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -69,7 +62,7 @@ router.post('/', async (req, res) => {
       // if no product tags, just respond
       res.status(200).json(product);
     })
-    .then((productTagIds) => res.status(200).json(productTagIds))
+    .then((productTagIds) => res.status(200).json("Product Created Successfully"))
     .catch((err) => {
       console.log(err);
       res.status(400).json(err);
@@ -91,6 +84,7 @@ router.put('/:id', (req, res) => {
     .then((productTags) => {
       // get list of current tag_ids
       const productTagIds = productTags.map(({ tag_id }) => tag_id);
+      // console.log(productTagIds, productTags);
       // create filtered list of new tag_ids
       const newProductTags = req.body.tagIds
         .filter((tag_id) => !productTagIds.includes(tag_id))
@@ -100,6 +94,7 @@ router.put('/:id', (req, res) => {
             tag_id,
           };
         });
+        // console.log(newProductTags, productTags, req.body.tagIds);
       // figure out which ones to remove
       const productTagsToRemove = productTags
         .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
@@ -111,9 +106,8 @@ router.put('/:id', (req, res) => {
         ProductTag.bulkCreate(newProductTags),
       ]);
     })
-    .then((updatedProductTags) => res.json(updatedProductTags, { message: 'Product updated!' }))
+    .then((updatedProductTags) => res.status(200).json({ message: 'Product updated successfully', updatedInfo: req.body }))
     .catch((err) => {
-      // console.log(err);
       res.status(400).json(err);
     });
 });
@@ -130,7 +124,7 @@ router.delete('/:id', async (req, res) => {
     res.status(404).json({ message: 'No product found with that id!' });
     return;
   }
-  res.status(200).json(productData, { message: 'Product deleted!' });
+  res.status(200).json("Product Successfully Deleted");
 }
   catch (err) {
     res.status(500).json(err);
